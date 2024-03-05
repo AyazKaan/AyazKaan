@@ -1,5 +1,5 @@
 <h2 align="left">Hi, I'm Kaan</h2>
-<h4 align="left">As a computer technician, and an inquisitive researcher fascinated by blockchain technology, I delve into various aspects of the field.</h4>
+<h4 align="left">As a computer technician and a curious researcher interested in blockchain technology, I'm exploring various aspects of the field.</h4>
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
