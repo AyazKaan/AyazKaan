@@ -4,7 +4,7 @@
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://t.me/kaan_ayaz" target="blank"><img align="center" src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="kaan_ayaz" height="30" width="40" /></a>
-<a href="https://discord.gg/kaanayaz" target="blank"><img align="center" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Discord_logo_round.svg" alt="kaanayaz" height="30" width="40" /></a>
+<a href="https://discord.gg/kaanayaz" target="blank"><img align="center" src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="kaanayaz" height="30" width="40" /></a>
 </p>
 
 <h3 align="left">Languages and Tools:</h3>
