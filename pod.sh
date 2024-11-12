@@ -10,12 +10,6 @@ sudo apt install -y ca-certificates zlib1g-dev libncurses5-dev libgdbm-dev libns
 # Podman ve Podman Compose Kurulumu
 echo "Installing Podman and Podman Compose..."
 sudo apt install -y podman
-pip3 install podman-compose
-
-# Podman için Kullanıcı İzni Ayarlama
-echo "Configuring user permissions for Podman..."
-sudo groupadd -f podman
-sudo usermod -aG podman $USER
 
 # SixGPT Dizini ve Çevresel Değişkenler Ayarları
 echo "Setting up SixGPT directory and environment variables..."
