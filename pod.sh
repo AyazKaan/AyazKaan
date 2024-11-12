@@ -7,38 +7,56 @@ echo "Updating system and installing dependencies..."
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install -y ca-certificates zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev tmux iptables curl nvme-cli git wget make jq libleveldb-dev build-essential pkg-config ncdu tar clang bsdmainutils lsb-release libssl-dev libreadline-dev libffi-dev jq gcc screen unzip lz4
 
-# Podman Kurulumu
-echo "Installing Podman..."
+# Podman ve Podman Compose Kurulumu
+echo "Installing Podman and Podman Compose..."
 sudo apt install -y podman
+pip3 install podman-compose
 
 # Podman için Kullanıcı İzni Ayarlama
 echo "Configuring user permissions for Podman..."
 sudo groupadd -f podman
 sudo usermod -aG podman $USER
-newgrp podman
 
-# Çevresel Değişkenler Ayarları
-echo "Setting environment variables..."
+# SixGPT Dizini ve Çevresel Değişkenler Ayarları
+echo "Setting up SixGPT directory and environment variables..."
+mkdir -p sixgpt
+cd sixgpt
 export VANA_PRIVATE_KEY=your_private_key
 export VANA_NETWORK=moksha
 
-# Podman Pod ve Konteynerleri Başlatma
-echo "Creating Pod and starting containers..."
+# docker-compose.yml Dosyası Oluşturma
+echo "Creating docker-compose.yml file..."
+cat <<EOL > docker-compose.yml
+version: '3.8'
 
-# Pod Oluşturma
-podman pod create --name sixgpt-pod -p 11435:11434 -p 3015:3000
+services:
+  ollama:
+    image: ollama/ollama:0.3.12
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
 
-# Ollama Servisini Başlatma
-podman run -d --name ollama --pod sixgpt-pod --restart=always \
-    -v ollama:/root/.ollama \
-    ollama/ollama:0.3.12
+  sixgpt3:
+    image: sixgpt/miner:latest
+    ports:
+      - "3015:3000"
+    depends_on:
+      - ollama
+    environment:
+      - VANA_PRIVATE_KEY=\${VANA_PRIVATE_KEY}
+      - VANA_NETWORK=\${VANA_NETWORK}
+    restart: always
 
-# SixGPT3 Servisini Başlatma
-podman run -d --name sixgpt3 --pod sixgpt-pod --restart=always \
-    -e VANA_PRIVATE_KEY="$VANA_PRIVATE_KEY" \
-    -e VANA_NETWORK="$VANA_NETWORK" \
-    sixgpt/miner:latest
+volumes:
+  ollama:
+EOL
+
+# Podman Compose ile SixGPT Başlatma
+echo "Starting SixGPT services with Podman Compose..."
+podman-compose up -d
 
 # Logları Görüntüleme
 echo "Displaying logs..."
-podman logs -f sixgpt3
+podman-compose logs -fn 100
