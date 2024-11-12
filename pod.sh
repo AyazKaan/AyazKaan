@@ -1,26 +1,28 @@
 #!/bin/bash
-
 set -e
 
-# Güncellemeler ve Gerekli Paketlerin Kurulumu
-echo "Updating system and installing dependencies..."
+# Sistem Güncelleme ve Gerekli Paketlerin Kurulumu
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install -y ca-certificates zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev tmux iptables curl nvme-cli git wget make jq libleveldb-dev build-essential pkg-config ncdu tar clang bsdmainutils lsb-release libssl-dev libreadline-dev libffi-dev jq gcc screen unzip lz4
 
-# Podman ve Podman Compose Kurulumu
-echo "Installing Podman and Podman Compose..."
-sudo apt install -y podman
+# Python3 ve Pip3 Kurulumu
+sudo apt install -y python3 python3-pip
 
-# SixGPT Dizini ve Çevresel Değişkenler Ayarları
-echo "Setting up SixGPT directory and environment variables..."
+# Podman ve Podman Compose Kurulumu
+sudo apt-get install -y podman
+pip3 install podman-compose
+
+
+# SixGPT Kurulumu
 mkdir -p sixgpt
 cd sixgpt
-export VANA_PRIVATE_KEY=your_private_key
-export VANA_NETWORK=moksha
 
-# docker-compose.yml Dosyası Oluşturma
-echo "Creating docker-compose.yml file..."
-cat <<EOL > docker-compose.yml
+# Değişkenleri Ayarlama (Özel anahtarı ve ağı kullanıcı değiştirebilir)
+export VANA_PRIVATE_KEY=your_private_key
+export VANA_NETWORK=moksha  # 'moksha' ya da 'satori' seçilebilir
+
+# docker-compose.yml Dosyasını Otomatik Oluşturma
+cat <<EOF > docker-compose.yml
 version: '3.8'
 
 services:
@@ -45,12 +47,10 @@ services:
 
 volumes:
   ollama:
-EOL
+EOF
 
-# Podman Compose ile SixGPT Başlatma
-echo "Starting SixGPT services with Podman Compose..."
+# SixGPT’yi Başlatma
 podman-compose up -d
 
-# Logları Görüntüleme
-echo "Displaying logs..."
+# Başlangıç Logları
 podman-compose logs -fn 100
