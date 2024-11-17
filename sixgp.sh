@@ -15,6 +15,7 @@ tmux new-session -d -s my_session
 tmux send-keys -t my_session 'cd sixgpt' C-m
 tmux send-keys -t my_session "export VANA_PRIVATE_KEY=$VANA_PRIVATE_KEY" C-m
 tmux send-keys -t my_session 'export VANA_NETWORK=moksha' C-m
+tmux send-keys -t my_session 'export OLLAMA_API_URL=http://ollama:11434/api' C-m
 tmux send-keys -t my_session 'docker compose up -d' C-m
 tmux send-keys -t my_session 'docker compose logs -fn 100' C-m
 
